@@ -1,7 +1,9 @@
+const fs = require('fs');
 const Koa = require('koa');
 const app = new Koa();
+const Router = require('koa-router');
 const numCPUs = require('os').cpus().length;
-
+const router = new Router();
 
 function startMathJax(){
     var mjAPI = require("mathjax-node-sre");
@@ -66,16 +68,16 @@ const renderLatex = function(params) {
         //     response.write(str_params + '\n');
         //     response.end();
         // }
-    });
-
-
-    
+    });    
   });
-
 }
 
 
-app.use(async ctx => {
+
+
+
+
+router.get('/equation', async function (ctx, next) {
   console.log(ctx.query);
   const result = await renderLatex({
     "format": "TeX",
@@ -94,4 +96,13 @@ app.use(async ctx => {
   ctx.body = result.svg;
 });
 
+
+router.get('/', async function (ctx, next) {
+  ctx.set('Content-Type', 'text/html');
+  ctx.body = fs.readFileSync('./index.html');
+});
+
+
+app.use(router.routes());
 app.listen(3000);
+console.log(`app start add port > 3000`);
