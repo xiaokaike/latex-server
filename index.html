@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>latex server render</title>
@@ -8,11 +9,13 @@
       width: 300px;
       margin: 0 auto;
     }
+
     #input {
       width: 100%;
       height: 100px;
       margin-bottom: 20px;
     }
+
     .container {
       border: 1px solid #999;
       padding: 10px;
@@ -21,6 +24,7 @@
   </style>
 
 </head>
+
 <body>
   <section>
     <h1>input latex</h1>
@@ -29,11 +33,12 @@
     </div>
     <div class="container">
       <img id="content" src="/equation?tex=%5Csqrt%7B%5Cfrac%7B1%7D%7B1%7D%7D" alt="latex" />
-    </div>  
+    </div>
   </section>
   <script type="text/javascript">
     var $input = document.getElementById('input');
     var $content = document.getElementById('content');
+
     function onChange(e) {
       // If the user has pressed enter
       if (e.keyCode !== 13) {
@@ -45,4 +50,5 @@
     $input.addEventListener('keypress', onChange);
   </script>
 </body>
+
 </html>

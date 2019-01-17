@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "builds": [{
+      "src": "api/equation*.js",
+      "use": "@now/node"
+    },
+    {
+      "src": "index.html",
+      "use": "@now/static"
+    }
+  ]
+}
