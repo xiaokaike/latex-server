@@ -32,7 +32,7 @@
       <textarea id="input" placeholder="input latex and enter to show"></textarea>
     </div>
     <div class="container">
-      <img id="content" src="/equation?tex=%5Csqrt%7B%5Cfrac%7B1%7D%7B1%7D%7D" alt="latex" />
+      <img id="content" src="/api/equation.ts?tex=%5Csqrt%7B%5Cfrac%7B1%7D%7B1%7D%7D" alt="latex" />
     </div>
   </section>
   <script type="text/javascript">
@@ -44,7 +44,7 @@
       if (e.keyCode !== 13) {
         return true;
       }
-      $content.setAttribute('src', '/equation?tex=' + encodeURIComponent($input.value));
+      $content.setAttribute('src', '/api/equation.ts?tex=' + encodeURIComponent($input.value));
       return false;
     }
     $input.addEventListener('keypress', onChange);

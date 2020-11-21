@@ -1,12 +1,8 @@
-const fs = require('fs');
-const Koa = require('koa');
-const app = new Koa();
-const Router = require('koa-router');
-const numCPUs = require('os').cpus().length;
-const router = new Router();
+import { NowRequest, NowResponse } from '@vercel/node';
+const mathjaxNodeSre = require('mathjax-node-sre');
 
 function startMathJax() {
-  var mjAPI = require('mathjax-node-sre');
+  var mjAPI = mathjaxNodeSre;
   mjAPI.config({
     MathJax: {
       SVG: {
@@ -69,11 +65,11 @@ const renderLatex = function (params) {
   });
 };
 
-router.get('/equation', async function (ctx, next) {
-  console.log(ctx.query);
-  const result = await renderLatex({
+export default async (req: NowRequest, res: NowResponse) => {
+  console.log(req.query);
+  const result: any = await renderLatex({
     format: 'TeX',
-    math: ctx.query.tex,
+    math: req.query.tex,
     svg: true,
     mml: false,
     png: false,
@@ -84,15 +80,10 @@ router.get('/equation', async function (ctx, next) {
     width: 1000000,
     linebreaks: false,
   });
-  ctx.set('Content-Type', 'image/svg+xml');
-  ctx.body = result.svg;
-});
 
-router.get('/', async function (ctx, next) {
-  ctx.set('Content-Type', 'text/html');
-  ctx.body = fs.readFileSync('./index.html');
-});
-
-app.use(router.routes());
-app.listen(3000);
-console.log(`app start add port > 3000`);
+  console.log(result.svg); // => <math xmlns="http://www.w3.org/1998/Math/MathML" display="block" alttext="x^2"><msup data-semantic-type="superscript" data-semantic-role="latinletter" data-semantic-id="2" data-semantic-children="0,1"><mi data-semantic-type="identifier" data-semantic-role="latinletter" data-semantic-font="italic" data-semantic-id="0" data-semantic-parent="2">x</mi><mn data-semantic-type="number" data-semantic-role="integer" data-semantic-font="normal" data-semantic-id="1" data-semantic-parent="2">2</mn></msup></math>
+  // res.set('Content-Type', 'image/svg+xml');
+  // res.headersSent('Content-Type', 'image/svg+xml');
+  res.setHeader('Content-Type', 'image/svg+xml');
+  res.send(result.svg);
+};

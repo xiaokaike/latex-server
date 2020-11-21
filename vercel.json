@@ -1,8 +1,8 @@
 {
   "builds": [
     {
-      "src": "api/equation*.js",
-      "use": "@now/node"
+      "src": "api/*",
+      "use": "@vercel/node"
     },
     {
       "src": "index.html",

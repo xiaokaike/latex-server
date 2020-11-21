@@ -10,6 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "mathjax-node-sre": "3.0.1"
+    "mathjax-node-sre": "3.0.3"
+  },
+  "devDependencies": {
+    "@vercel/node": "^1.8.5"
   }
 }
