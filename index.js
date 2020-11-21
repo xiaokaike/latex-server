@@ -1,35 +1,35 @@
-const fs = require('fs');
-const Koa = require('koa');
+const fs = require("fs");
+const Koa = require("koa");
 const app = new Koa();
-const Router = require('koa-router');
-const numCPUs = require('os').cpus().length;
+const Router = require("koa-router");
+const numCPUs = require("os").cpus().length;
 const router = new Router();
 
 function startMathJax() {
-  var mjAPI = require('mathjax-node-sre');
+  var mjAPI = require("mathjax-node-sre");
   mjAPI.config({
     MathJax: {
       SVG: {
-        font: 'STIX-Web',
+        font: "STIX-Web",
       },
       tex2jax: {
-        preview: ['[math]'],
+        preview: ["[math]"],
         processEscapes: true,
-        processClass: ['math'],
+        processClass: ["math"],
         // inlineMath: [ ['$','$'], ["\\(","\\)"] ],
         // displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+        skipTags: ["script", "noscript", "style", "textarea", "pre", "code"],
       },
       TeX: {
         noUndefined: { disabled: true },
         Macros: {
-          mbox: ['{\\text{#1}}', 1],
-          mb: ['{\\mathbf{#1}}', 1],
-          mc: ['{\\mathcal{#1}}', 1],
-          mi: ['{\\mathit{#1}}', 1],
-          mr: ['{\\mathrm{#1}}', 1],
-          ms: ['{\\mathsf{#1}}', 1],
-          mt: ['{\\mathtt{#1}}', 1],
+          mbox: ["{\\text{#1}}", 1],
+          mb: ["{\\mathbf{#1}}", 1],
+          mc: ["{\\mathcal{#1}}", 1],
+          mi: ["{\\mathit{#1}}", 1],
+          mr: ["{\\mathrm{#1}}", 1],
+          ms: ["{\\mathsf{#1}}", 1],
+          mt: ["{\\mathtt{#1}}", 1],
         },
       },
     },
@@ -40,9 +40,9 @@ function startMathJax() {
 
 const mjAPI = startMathJax();
 
-const renderLatex = function(params) {
+const renderLatex = function (params) {
   return new Promise((resolve, reject) => {
-    mjAPI.typeset(params, function(result) {
+    mjAPI.typeset(params, function (result) {
       resolve(result);
 
       // if (!result.errors) {
@@ -69,28 +69,28 @@ const renderLatex = function(params) {
   });
 };
 
-router.get('/equation', async function(ctx, next) {
+router.get("/equation", async function (ctx, next) {
   console.log(ctx.query);
   const result = await renderLatex({
-    format: 'TeX',
+    format: "TeX",
     math: ctx.query.tex,
     svg: true,
     mml: false,
     png: false,
     speakText: true,
-    speakRuleset: 'mathspeak',
-    speakStyle: 'default',
+    speakRuleset: "mathspeak",
+    speakStyle: "default",
     ex: 6,
     width: 1000000,
     linebreaks: false,
   });
-  ctx.set('Content-Type', 'image/svg+xml');
+  ctx.set("Content-Type", "image/svg+xml");
   ctx.body = result.svg;
 });
 
-router.get('/', async function(ctx, next) {
-  ctx.set('Content-Type', 'text/html');
-  ctx.body = fs.readFileSync('./index.html');
+router.get("/", async function (ctx, next) {
+  ctx.set("Content-Type", "text/html");
+  ctx.body = fs.readFileSync("./index.html");
 });
 
 app.use(router.routes());
